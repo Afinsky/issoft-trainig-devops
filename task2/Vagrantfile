@@ -1,0 +1,46 @@
+$centos_script = <<-SCRIPT
+sudo yum install -y git 
+SCRIPT
+
+$ubuntu_script = <<-SCRIPT
+sudo apt install -y git 
+SCRIPT
+
+
+
+
+MACHINES = {
+    :centosserver => {
+        :box_name => "centos/7",
+        :box_version => "1.0",
+		:ip_addr => '192.168.100.1',
+		:script_ => "$centos_script"
+    },
+    :ubuntuserver => {
+        :box_name => "generic/ubuntu1804",
+        :box_version => "1.0",
+		:ip_addr => '192.168.100.2',
+		:script_ => "$ubuntu_script"
+    }
+
+}
+
+Vagrant.configure("2") do |config|
+	MACHINES.each do |boxname, boxconfig|
+		config.vm.define boxname do |box|
+		    box.vm.box = boxconfig[:box_name]
+		    box.vm.host_name = boxname.to_s
+
+		    box.vm.network "private_network", ip: boxconfig[:ip_addr]
+
+		#   box.vm.provider "virtualbox" do |vb|
+		    box.vm.provider :virtualbox do |vb|
+			    vb.memory = "2048"
+			    vb.cpus = "2"
+			    vb.gui = false
+			end
+			
+			box.vm.provision "shell", inline: boxconfig[:script_]
+	    end
+	end
+end
