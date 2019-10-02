@@ -15,16 +15,17 @@ MACHINES = {
 }
 
 Vagrant.configure("2") do |config|
-        config.hostmanager.enabled = true
+    config.hostmanager.enabled = true
 	config.hostmanager.manage_guest = true
+	
 	MACHINES.each do |boxname, boxconfig|
 		config.vm.define boxname do |box|
 		    box.vm.box = boxconfig[:box_name]
 		    box.vm.host_name = boxname.to_s
             
-            box.ssh.forward_agent = true
+        #   box.ssh.forward_agent = true
 		    
-                    box.vm.network "private_network", ip: boxconfig[:ip_addr]
+            box.vm.network "private_network", ip: boxconfig[:ip_addr]
 
 		#   box.vm.provider "virtualbox" do |vb|
 		    box.vm.provider :virtualbox do |vb|

@@ -15,9 +15,6 @@ chmod 600 ~/.ssh/id_rsa
 
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
-#FUCK!!!
-#ssh -T git@github.com 
-
 
 echo "-------------------------------------"
 
