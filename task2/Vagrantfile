@@ -2,42 +2,41 @@ MACHINES = {
     :centosserver => {
         :box_name => "centos/7",
         :box_version => "1.0",
-		:ip_addr => '192.168.100.1',
-		:script_ => "bootstrap_centos.sh"
+        :ip_addr => '192.168.100.1',
+        :script_ => "bootstrap_centos.sh"
     },
     :ubuntuserver => {
         :box_name => "generic/ubuntu1804",
         :box_version => "1.0",
-		:ip_addr => '192.168.100.2',
-		:script_ => "bootstrap_ubuntu.sh"
+        :ip_addr => '192.168.100.2',
+        :script_ => "bootstrap_ubuntu.sh"
     }
 
 }
 
+
 Vagrant.configure("2") do |config|
     config.hostmanager.enabled = true
-	config.hostmanager.manage_guest = true
-	
-	MACHINES.each do |boxname, boxconfig|
-		config.vm.define boxname do |box|
-		    box.vm.box = boxconfig[:box_name]
-		    box.vm.host_name = boxname.to_s
-            
+    config.hostmanager.manage_guest = true	
+
+    MACHINES.each do |boxname, boxconfig|
+        config.vm.define boxname do |box|
+            box.vm.box = boxconfig[:box_name]
+            box.vm.host_name = boxname.to_s
         #   box.ssh.forward_agent = true
-		    
             box.vm.network "private_network", ip: boxconfig[:ip_addr]
 
-		#   box.vm.provider "virtualbox" do |vb|
-		    box.vm.provider :virtualbox do |vb|
-			    vb.memory = "2048"
-			    vb.cpus = "2"
-			    vb.gui = false
-			end
-		
-			box.vm.provision "file", source: "~/.ssh/id_rsa_vagrant.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
-			box.vm.provision "file", source: "~/.ssh/id_rsa_vagrant", destination: "/home/vagrant/.ssh/id_rsa"
-			
-			box.vm.provision "shell", :path => "./bootstrap/" + boxconfig[:script_]
-	    end
-	end
+        #   box.vm.provider "virtualbox" do |vb|
+            box.vm.provider :virtualbox do |vb|
+                vb.memory = "2048"
+                vb.cpus = "2"
+                vb.gui = false
+            end
+
+            box.vm.provision "file", source: "~/.ssh/id_rsa_vagrant.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
+            box.vm.provision "file", source: "~/.ssh/id_rsa_vagrant", destination: "/home/vagrant/.ssh/id_rsa"
+
+            box.vm.provision "shell", :path => "./bootstrap/" + boxconfig[:script_]
+        end
+    end
 end
