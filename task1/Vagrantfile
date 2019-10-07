@@ -1,0 +1,65 @@
+#home = ENV['userprofile']
+
+MACHINES = {
+
+    :centoslinux => {
+        :box_name => "centos/7",
+        :box_version => "1.0",
+        :ip_addr => '192.168.0.40',   #Your ip here
+        :disks => {
+            :sata1 => {
+                :dfile => './sata1.vdi',
+                :size => 1024,
+                :port => 2
+            },
+            :sata2 => {
+                :dfile => './sata2.vdi',
+                :size => 1024, #Megabytes
+                :port => 3
+            }
+       	}
+    },
+
+}
+
+
+Vagrant.configure("2") do |config|
+
+   #boxname (key) = :centoslinux, boxconfig (value) = {...}  
+    MACHINES.each do |boxname, boxconfig|
+        config.vm.define boxname do |box|
+
+            box.vm.box = boxconfig[:box_name]
+            box.vm.host_name = boxname.to_s 
+
+            box.vm.network "public_network", ip: boxconfig[:ip_addr]
+
+            box.vm.provider :virtualbox do |vb|
+                vb.customize ["modifyvm", :id, "--memory", "1024"] 
+                vb.gui = false
+                vb.cpus = 2
+               
+               #----Check: If SATA Controller doesn't exist - create its   
+                value = boxconfig[:disks].values[0]
+
+                unless File.exist?(value[:dfile])
+                    vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata' ]     
+                end
+                #------------------------------------
+
+                boxconfig[:disks].each do |dname, dconf|
+                              
+                    unless File.exist?(dconf[:dfile])
+                        #vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata' ]     
+                        vb.customize [ 'createhd', '--filename', dconf[:dfile], '--variant', 'Fixed', '--size', dconf[:size] ]
+                    end
+
+                    vb.customize [ 'storageattach', :id, '--storagectl', 'SATA Controller', '--port', dconf[:port], '--device', 0, '--type', 'hdd', '--medium', dconf[:dfile] ]
+                end
+                
+            end
+
+        end
+
+    end
+end
