@@ -1,20 +1,25 @@
 #home = ENV['userprofile']
 
+
+SIZE_DISK2 = 3
+SIZE_DISK3 = 7
+
+
 MACHINES = {
 
-    :centoslinux => {
-        :box_name => "centos/7",
+    :ubuntuserver => {
+        :box_name => "generic/ubuntu1804",
         :box_version => "1.0",
         :ip_addr => '192.168.0.40',   #Your ip here
         :disks => {
             :sata1 => {
                 :dfile => './sata1.vdi',
-                :size => 1024,
+                :size => SIZE_DISK2 * 1024,
                 :port => 2
             },
             :sata2 => {
                 :dfile => './sata2.vdi',
-                :size => 1024, #Megabytes
+                :size => SIZE_DISK3 * 1024, #Megabytes
                 :port => 3
             }
        	}
@@ -25,7 +30,7 @@ MACHINES = {
 
 Vagrant.configure("2") do |config|
 
-   #boxname (key) = :centoslinux, boxconfig (value) = {...}  
+   #boxname (key) = :ubuntulinux, boxconfig (value) = {...}  
     MACHINES.each do |boxname, boxconfig|
         config.vm.define boxname do |box|
 
@@ -56,9 +61,12 @@ Vagrant.configure("2") do |config|
 
                     vb.customize [ 'storageattach', :id, '--storagectl', 'SATA Controller', '--port', dconf[:port], '--device', 0, '--type', 'hdd', '--medium', dconf[:dfile] ]
                 end
-                
             end
 
+            box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ['./*.vdi'] 
+            
+            box.vm.provision "shell", :path => "./bootstrap/partition.sh"
+            box.vm.provision "shell", :path => "./bootstrap/format.sh"
         end
 
     end
