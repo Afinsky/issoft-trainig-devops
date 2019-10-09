@@ -1,5 +1,18 @@
 #home = ENV['userprofile']
 
+$script = <<-SCRIPT
+
+apt install apt install apt-transport-https ca-certificates curl software-properties-common -yqq 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+
+apt update -yqq
+apt install docker-ce -yqq && systemctl start docker && systemctl enable docker
+
+usermod -aG docker vagrant
+SCRIPT
+
+
 
 SIZE_DISK2 = 3
 SIZE_DISK3 = 7
@@ -64,9 +77,12 @@ Vagrant.configure("2") do |config|
             end
 
             box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ['./*.vdi'] 
-            
+           
+            box.vm.provision "shell", inline: $script
+
             box.vm.provision "shell", :path => "./bootstrap/partition.sh"
-            box.vm.provision "shell", :path => "./bootstrap/format.sh"
+           # box.vm.provision "shell", :path => "./bootstrap/format.sh"
+            box.vm.provision "shell", :path => "./bootstrap/lvm.sh"
         end
 
     end
