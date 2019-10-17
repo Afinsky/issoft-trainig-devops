@@ -1,0 +1,91 @@
+$script = <<-SCRIPT
+apt remove docker docker-engine docker.io containerd runc -yqq
+apt update -yqq
+apt-get install -yqq \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+apt update -yqq && \
+   apt install -yqq docker-ce \
+   docker-ce-cli \
+   containerd.io && \
+systemctl start docker && systemctl enable docker
+usermod -aG docker vagrant
+SCRIPT
+
+
+
+SIZE_DISK2 = 3 #in GB 
+SIZE_DISK3 = 7
+
+
+BOX_IMAGE = "generic/ubuntu1804"
+NODE_COUNT = 2
+
+
+DISKS = {
+    :sata1 => {
+        :dfile => 'sata1.vdi',
+        :size => SIZE_DISK2 * 1024,
+        :port => 2
+    },
+    :sata2 => {
+        :dfile => 'sata2.vdi',
+        :size => SIZE_DISK3 * 1024, #Megabytes
+        :port => 3
+    }
+}
+
+
+
+Vagrant.configure("2") do |config|
+    
+    (1..NODE_COUNT).each do |i|
+        config.vm.define "node#{i}" do |box|
+            box.vm.box = BOX_IMAGE
+ 
+            dirname = "disks_of_node#{i}"
+            
+            box.vm.hostname = "node#{i}"
+            box.vm.network :private_network, ip: "192.168.10.#{i + 40}"
+
+            box.vm.provider :virtualbox do |vb|
+                vb.customize ["modifyvm", :id, "--memory", "1024"]
+                vb.gui = false
+                vb.cpus = 2
+
+                Dir.mkdir(dirname) unless File.exists?(dirname)
+                
+                unless File.exist?(dirname + "/" + "*.vdi")
+                    vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata' ]     
+                end
+
+                DISKS.each do |sata_, sataconfig|
+                    
+                    disk_path="./" + dirname + "/" + sataconfig[:dfile]
+
+                    unless File.exist?(disk_path)
+                        vb.customize [ 'createhd', '--filename', disk_path, '--variant', 'Fixed', '--size', sataconfig[:size] ]
+                    end
+
+                    vb.customize [ 'storageattach', :id, '--storagectl', 'SATA Controller', '--port', sataconfig[:port], '--device', 0, '--type', 'hdd', '--medium', disk_path ]
+                end
+
+
+            end
+
+            box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ["./" + dirname + "/" + "*.vdi" ]
+
+            box.vm.provision "shell", inline: $script    
+        end
+    end
+
+
+end
