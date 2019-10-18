@@ -22,8 +22,8 @@ SCRIPT
 
 
 
-SIZE_DISK2 = 3 #in GB 
-SIZE_DISK3 = 7
+SIZE_DISK2 = 1 #in GB 
+SIZE_DISK3 = 1
 
 
 BOX_IMAGE = "generic/ubuntu1804"
@@ -44,6 +44,8 @@ DISKS = {
 }
 
 
+DIRECTORY_PATTERN = "disks_of_node"
+
 
 Vagrant.configure("2") do |config|
     
@@ -51,7 +53,8 @@ Vagrant.configure("2") do |config|
         config.vm.define "node#{i}" do |box|
             box.vm.box = BOX_IMAGE
  
-            dirname = "disks_of_node#{i}"
+            dirname = DIRECTORY_PATTERN + "#{i}"
+            #puts dirname
             
             box.vm.hostname = "node#{i}"
             box.vm.network :private_network, ip: "192.168.10.#{i + 40}"
@@ -63,13 +66,15 @@ Vagrant.configure("2") do |config|
 
                 Dir.mkdir(dirname) unless File.exists?(dirname)
                 
-                unless File.exist?(dirname + "/" + "*.vdi")
-                    vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata' ]     
-                end
+                #unless File.exist?("./" + dirname + "/" + '*.vdi')
+                vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata' ] if Dir.empty?("./" + dirname)    
+                
 
                 DISKS.each do |sata_, sataconfig|
                     
                     disk_path="./" + dirname + "/" + sataconfig[:dfile]
+
+                    #puts disk_path
 
                     unless File.exist?(disk_path)
                         vb.customize [ 'createhd', '--filename', disk_path, '--variant', 'Fixed', '--size', sataconfig[:size] ]
@@ -81,8 +86,9 @@ Vagrant.configure("2") do |config|
 
             end
 
-            box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ["./" + dirname + "/" + "*.vdi" ]
+            #box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true, rsync__exclude: ['./' + DIRECTORY_PATTERN + '*']
 
+            box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true, rsync_exclude: ['./*']
             box.vm.provision "shell", inline: $script    
         end
     end
