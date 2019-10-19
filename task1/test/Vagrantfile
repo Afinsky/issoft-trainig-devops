@@ -115,8 +115,17 @@ Vagrant.configure("2") do |config|
             #box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true, rsync__exclude: ['./' + DIRECTORY_PATTERN + '*']
 
             #box.vm.synced_folder "./", "/vagrant", type: "rsync", rsync__auto: true, rsync__exclude: ['./disks_of_node1', './disks_of_node2']
+            
+
             box.vm.provision "shell", inline: $script
             box.vm.provision "shell", :path => "./bootstrap/lvm.sh"    
+
+
+            if i == 1
+                box.vm.provision "shell", :path => "./bootstrap/server_ntp.sh"
+            else
+                box.vm.provision "shell", :path => "./bootstrap/client_ntp.sh"
+            end
         end
     end
 
