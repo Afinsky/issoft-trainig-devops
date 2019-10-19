@@ -1,26 +1,28 @@
 #!/bin/bash
 
 
-volumes=$(lsblk -o NAME,MOUNTPOINT -dsn | awk '$2=="" {print $1}')
-vggrp="vg_"`hostname`
+pv_volume=$(lsblk -o NAME -dsn | grep -vx '.\{4,\}')
+vg_group="vg_"`hostname`
 
-for i in $volumes
+for i in $pv_volume
 do
 
 echo item: $i
-sudo pvcreate /dev/$i -f
+pvcreate /dev/$i
+
 done
 
-cd /dev && sudo vgcreate $vggrp $volumes && cd -
+cd /dev && vgcreate $vg_group $pv_volume && cd -
 
-sudo lvcreate -l 40%VG $vggrp
+lvcreate -l 20%VG $vg_group
 
-dirs=`ls /dev/$vggrp`
 
-for j in $dirs
+folders=`ls /dev/$vg_group`
+
+for j in $folders
 do
 
-sudo mkfs.ext4 -F /dev/$vggrp/$j
+sudo mkfs.ext4 -F /dev/$vg_group/$j
 mkdir /mnt/$j
-mount /dev/$vggrp/$j /mnt/$j
+mount /dev/$vg_group/$j /mnt/$j
 done
