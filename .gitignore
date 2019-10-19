@@ -1,2 +1,3 @@
 .vagrant
 *.vdi
+disks_of_node*

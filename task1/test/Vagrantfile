@@ -1,4 +1,6 @@
 $script = <<-SCRIPT
+timedatectl set-timezone Europe/Minsk
+
 apt remove docker docker-engine docker.io containerd runc -yqq
 apt update -yqq
 apt-get install -yqq \
@@ -16,8 +18,28 @@ apt update -yqq && \
    apt install -yqq docker-ce \
    docker-ce-cli \
    containerd.io && \
+
 systemctl start docker && systemctl enable docker
 usermod -aG docker vagrant
+
+
+#useradd -m -s /bin/bash alex
+#usermod -aG sudo alex
+
+useradd -m -s /bin/bash -G sudo alex
+
+echo "3" | update-alternatives --config editor
+
+echo -e '\n' >> /etc/sudoers 
+
+echo '#####ADDED AT CREATION VM############' >> /etc/sudoers
+#echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
+echo '%sudo   ALL=(ALL:ALL) NOPASSWD: /usr/sbin/service docker *' >> /etc/sudoers
+echo '#####END OF ADDED AT CREATION VM#####' >> /etc/sudoers
+
+apt install ntp -yqq
+
+
 SCRIPT
 
 
@@ -48,6 +70,9 @@ DIRECTORY_PATTERN = "disks_of_node"
 
 
 Vagrant.configure("2") do |config|
+    #You need install 
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_guest = true    
     
     (1..NODE_COUNT).each do |i|
         config.vm.define "node#{i}" do |box|
@@ -85,11 +110,13 @@ Vagrant.configure("2") do |config|
 
 
             end
-
+            
+            box.vm.synced_folder '.', '/vagrant', disabled: true
             #box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true, rsync__exclude: ['./' + DIRECTORY_PATTERN + '*']
 
-            box.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true, rsync_exclude: ['./*']
-            box.vm.provision "shell", inline: $script    
+            #box.vm.synced_folder "./", "/vagrant", type: "rsync", rsync__auto: true, rsync__exclude: ['./disks_of_node1', './disks_of_node2']
+            box.vm.provision "shell", inline: $script
+            box.vm.provision "shell", :path => "./bootstrap/lvm.sh"    
         end
     end
 
