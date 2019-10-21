@@ -1,0 +1,41 @@
+$script = <<-SCRIPT
+apt update -yqq
+apt install openssh-server -y && systemctl enable ssh && systemctl start ssh
+SCRIPT
+
+
+
+BOX_IMAGE = "generic/ubuntu1804"
+NODE_COUNT = 4 
+
+
+
+
+Vagrant.configure("2") do |config|
+    #You need install 
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_guest = true    
+    
+    (1..NODE_COUNT).each do |i|
+        config.vm.define "node#{i}" do |box|
+            box.vm.box = BOX_IMAGE
+ 
+            box.vm.hostname = "node#{i}"
+            box.vm.network :private_network, ip: "192.168.30.#{i + 40}"
+
+            box.vm.provider :virtualbox do |vb|
+                vb.customize ["modifyvm", :id, "--memory", "1024"]
+                vb.gui = false
+                vb.cpus = 2
+            end
+            
+            box.vm.synced_folder '.', '/vagrant', disabled: true
+            
+            box.vm.provision "shell", inline: $script
+            #box.vm.provision "shell", :path => "./bootstrap/lvm.sh"    
+
+        end
+    end
+
+
+end
