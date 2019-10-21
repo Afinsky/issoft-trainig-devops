@@ -1,0 +1,12 @@
+Host *
+    ForwardAgent yes
+
+Host tachka1
+    HostName node2
+    User vagrant
+    IdentityFile ~/.ssh/for_nodes_key
+
+Host tachka2
+    HostName node3
+    User vagrant
+    IdentityFile ~/.ssh/for_nodes_key

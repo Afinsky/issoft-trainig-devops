@@ -6,9 +6,9 @@ SCRIPT
 
 
 BOX_IMAGE = "generic/ubuntu1804"
-NODE_COUNT = 4 
+NODE_COUNT = 3
 
-
+DIRNAME = "keys"
 
 
 Vagrant.configure("2") do |config|
@@ -29,13 +29,40 @@ Vagrant.configure("2") do |config|
                 vb.cpus = 2
             end
             
-            box.vm.synced_folder '.', '/vagrant', disabled: true
+            #box.vm.synced_folder '.', '/vagrant', disabled: true
+            
+            if i == 1
+                box.vm.provision "file", source: "config", destination: "/tmp/config"
+                box.vm.provision "shell", :path => "./bootstrap/ssh_preconfig.sh"
+            
+                Dir.mkdir(DIRNAME) unless File.exists?(DIRNAME)           
+                box.vm.synced_folder "./" + DIRNAME, "/vagrant"
+
+                #box.vm.synced_folder "./" + DIRNAME, "/home/vagrant/.ssh"
+
+            else
+                box.vm.provision "file", source: "./" + DIRNAME, destination: "/tmp/keys" 
+                box.vm.provision "shell", :path => "./bootstrap/add_keys.sh"
+            end
             
             box.vm.provision "shell", inline: $script
-            #box.vm.provision "shell", :path => "./bootstrap/lvm.sh"    
 
         end
     end
+
+
+    #(1..NODE_COUNT).each do |i|
+    #    box.vm.provision "shell", :path => "./bootstrap/ssh_keyscan.sh" 
+    #end
+    
+    
+
+    
+    #config.vm.define "node1" do |box|
+    #    box.vm.synced_folder './' + DIRNAME, "/home/vagrant/.ssh", '/vagrant', disabled: true
+    #end
+
+    #FileUtils.rm_rf(DIRNAME) if File.exists?(DIRNAME)
 
 
 end
