@@ -1,6 +1,13 @@
 Host *
     ForwardAgent yes
 
+Host *
+   StrictHostKeyChecking no
+   UserKnownHostsFile=/dev/null
+
+
+
+
 Host tachka1
     HostName node2
     User vagrant

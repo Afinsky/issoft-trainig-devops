@@ -8,6 +8,8 @@ for i in $list_for_scan
 do
 
 echo item: $i
-ssh-keyscan -H $i >> ~/.ssh/known_hosts
+ssh-keyscan -H $i >> /home/vagrant/.ssh/known_hosts
 
 done
+
+chmod 644 /home/vagrant/.ssh/known_hosts
