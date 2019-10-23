@@ -1,0 +1,20 @@
+HOWTODO:
+
+
+- node2 and node3:
+
+sudo route del default 
+sudo route add default gw 192.168.20.11 eth1
+If defauls dns not work add 8.8.8.8 dns
+
+- node1:
+
+#Enable forwarding
+sudo su -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+
+#For subnet
+sudo iptables -t nat -A POSTROUTING -s 192.168.20.0/24 -o eth0 -j MASQUERADE
+
+#For only one host (node2: 192.168.20.12 but not node3: 192.168.20.13)
+sudo iptables -t nat -A POSTROUTING -s 192.168.20.12 -o eth0 -j MASQUERADE
