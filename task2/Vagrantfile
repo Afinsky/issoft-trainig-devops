@@ -1,0 +1,23 @@
+$script = <<-SCRIPT
+echo "ISSOFT_VAR=' '" >> /etc/environment
+SCRIPT
+
+
+
+Vagrant.configure("2") do |config|
+
+     
+    config.vm.box = "generic/ubuntu1804"
+
+    config.vm.network "private_network", ip: '192.168.80.10'
+    
+    config.vm.provider :virtualbox do |vb|
+      vb.memory = "2048"
+      vb.cpus = "2"     
+      vb.gui = false
+    end
+
+    config.vm.synced_folder "./bootstrap", "/vagrant"
+    config.vm.provision "shell", inline: $script
+
+end
