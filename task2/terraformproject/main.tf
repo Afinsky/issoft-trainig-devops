@@ -6,11 +6,46 @@ provider "aws" {
   }
 }
 
+
+#Add availability_zone as value!!!
+
 module "vpc" {
   source = "./vpc"
 }
 
-#module "igw" {
-#  source = "./igw"
-#  vpc_id = module.vpc.vpc_id
-#}
+module "igw" {
+  source = "./igw"
+  vpc_id = module.vpc.vpc_id
+}
+
+
+
+
+module "public_subnet" {
+  source = "./public_subnet"
+  vpc_id = module.vpc.vpc_id
+}
+
+module "private_subnet_be" {
+  source = "./private_subnet_be"
+  vpc_id = module.vpc.vpc_id
+}
+
+module "private_subnet_db" {
+  source = "./private_subnet_db"
+  vpc_id = module.vpc.vpc_id
+}
+
+
+
+
+module "public_rt" {
+  source = "./public_rt"
+  vpc_id = module.vpc.vpc_id
+  igw_id = module.igw.igw_id
+}
+
+module "private_rt" {
+  source = "./private_rt"
+
+}

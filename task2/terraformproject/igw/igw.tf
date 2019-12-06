@@ -1,6 +1,6 @@
-resource "aws_internet_gateway" "tera-abotyan-training-igw" {
+resource "aws_internet_gateway" "igw" {
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id = var.vpc_id
 
   tags = {
     Name = "tera-abotyan-training-igw"
