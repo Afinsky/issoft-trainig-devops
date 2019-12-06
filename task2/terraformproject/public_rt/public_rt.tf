@@ -7,6 +7,6 @@ resource "aws_route_table" "public-rt" {
   }
 
   tags = {
-    "Name" = "tera-abotyan-training-rt"
+    "Name" = "tera-abotyan-rt-igw"
   }
 }

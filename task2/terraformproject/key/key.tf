@@ -1,0 +1,6 @@
+resource "aws_key_pair" "key" {
+  key_name = "abotyan-key"
+  #public_key = file(var.PUBLIC_KEY_PATH)
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCzTBAXTKU3bGTxawr1DyMBw5mUnEn+g+DN2cu++FbFn/Et9tDj2hLnNGejJr2gNFmXXUVA1WhQCjUvKkJ+woNuxDfNrUWLE7Z307YzDhoR+Aa/j0D1/yrUy66UUcw3Q1lgrmEt/7cefA4fKI+9CucV4Uepe+qlN2eQBV2yrrhBXwtCavbap1XJQJU3v+B2+B+zQZ93CvvPeTj/RwfkAKZ3kiinGuv5YvcCEagCPhV/OzrfnLp0VV5Emd72iQZhHDGj0Lpl+VzIBaxqMoNVVhrwx61t2jPWV7/W8RIkIPJM5eOTk1Qy3nRy+2vXcN8ONFk3NsZYRMRNYASBlGg/aKvATGtJmRPadKgKniU6BQAqrXkvOAizm2skqF2KjJAmC2MjfdVhM3DG8PYLO57MOu47zGd6JBj7WVNNEOItGnSL8Eb3sfJVB3XSWYvCu17WU/l36vpGkFvq/NuArBeEs2BNSZ35i2KtdtzN8bVd1Gw5c6MlvrGcXc7AFhU2uFLo3Ys= AlexeyBotyan@MSQ-WSW-4090"
+
+}

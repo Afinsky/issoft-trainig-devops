@@ -13,7 +13,8 @@ variable "AWS_REGION" {
 #}
 
 variable "AWS_NAT_AMI" {
-  default = "ami-01623d7b"
+  #  default = "ami-01623d7b"
+  default = "ami-0a0cb6c7bcb2e4c51"
 }
 
 variable "PUBLIC_KEY_PATH" {

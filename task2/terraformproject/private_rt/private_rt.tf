@@ -4,9 +4,10 @@ resource "aws_route_table" "private-rt" {
   route {
     cidr_block = "0.0.0.0/0"
     #    instance_id = aws_instance.nat-a.id
+    instance_id = var.igw_id
   }
 
   tags = {
-    "Name" = "tera-abotyan-training-rt-nat-a"
+    "Name" = "tera-abotyan-rt-nat-a"
   }
 }
