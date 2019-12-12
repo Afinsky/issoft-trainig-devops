@@ -7,7 +7,7 @@ resource "aws_route_table" "public-rt" {
   }
 
   tags = {
-    "Name" = "dev-abotyan-rt"
+    "Name"        = "dev-abotyan-rt"
     "description" = "better-tera-abotyan-rt-igw"
   }
 }

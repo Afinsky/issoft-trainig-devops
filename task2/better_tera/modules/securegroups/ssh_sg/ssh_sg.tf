@@ -68,7 +68,7 @@ resource "aws_security_group" "ssh-sg" {
   }
 
   tags = {
-    Name = "dev-abotyan-sg-app"
+    Name        = "dev-abotyan-sg-app"
     description = "better-tera-abotyan-sg-ssh"
   }
 }

@@ -2,7 +2,7 @@ resource "aws_instance" "nat" {
   ami           = var.aws_ami
   instance_type = var.nat_instance_type
 
-  count = length(var.availability_zones)
+  count     = length(var.availability_zones)
   subnet_id = element(var.sn_id, count.index)
 
   key_name        = var.key_id
@@ -21,7 +21,7 @@ EOF
 
 
   tags = {
-    Name = "dev-abotyan-nat-${element(var.availability_zones, count.index)}"
+    Name        = "dev-abotyan-nat-${element(var.availability_zones, count.index)}"
     description = "better-tera-abotyan-nat. Public subnet - ${element(var.availability_zones, count.index)}"
   }
 }

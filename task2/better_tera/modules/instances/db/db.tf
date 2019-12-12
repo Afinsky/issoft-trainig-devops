@@ -5,16 +5,16 @@ resource "aws_instance" "db" {
   #count = length(var.availability_zones)
   #subnet_id = element(var.sn_id, count.index)
 
-#Because need only one instance: us-east-1a
+  #Because need only one instance: us-east-1a
   subnet_id = element(var.sn_id, 0)
 
   key_name        = var.key_id
   security_groups = [var.sg_id]
 
   associate_public_ip_address = false
-#count.index ->0
+  #count.index ->0
   tags = {
-    Name = "dev-abotyan-db-${element(var.availability_zones, 0)}"
+    Name        = "dev-abotyan-db-${element(var.availability_zones, 0)}"
     description = "better-tera-abotyan-db. Database subnet - ${element(var.availability_zones, 0)}"
   }
 }

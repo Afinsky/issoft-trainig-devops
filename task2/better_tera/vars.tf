@@ -1,49 +1,49 @@
 variable "environment" {
-    type = "string"
-    default = "demo"
+  type    = "string"
+  default = "demo"
 }
 
 variable "region" {
-    type = "string"
+  type = "string"
 }
 
 variable "availability_zones" {
-    type = "list"
+  type = "list"
 }
 
 variable "bastion_instance_type" {
-    type = "string"
+  type = "string"
 }
 
 variable "nat_instance_type" {
-    type = "string"
+  type = "string"
 }
 
 variable "proxy_instance_type" {
-    type = "string"
+  type = "string"
 }
 
 variable "app_instance_type" {
-    type = "string"
+  type = "string"
 }
 
 variable "db_instance_type" {
-    type = "string"
+  type = "string"
 }
 
 variable "cidr_block" {
-    type = "string"
-    description = "VPC cidr block. Exaple: 10.10.0.0/16"
+  type        = "string"
+  description = "VPC cidr block. Exaple: 10.10.0.0/16"
 }
 
 variable "key_name" {
-    type = "string"
+  type = "string"
 }
 
 variable "pub_key_path" {
-    type = "string"
+  type = "string"
 }
 
 variable "aws_ami" {
-    type = "string"
+  type = "string"
 }

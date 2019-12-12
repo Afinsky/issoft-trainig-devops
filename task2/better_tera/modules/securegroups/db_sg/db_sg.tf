@@ -8,14 +8,14 @@ resource "aws_security_group" "db-sg" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["10.11.10.0/24"]
+    cidr_blocks = [var.cidr_block]
   }
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.11.0.0/16"]
+    cidr_blocks = [var.cidr_block]
   }
 
   ingress {
@@ -33,7 +33,7 @@ resource "aws_security_group" "db-sg" {
   }
 
   tags = {
-    Name = "dev-abotyan-sg-db"
+    Name        = "dev-abotyan-sg-db"
     description = "better-tera-abotyan-sg-db"
   }
 }

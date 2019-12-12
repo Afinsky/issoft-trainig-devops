@@ -8,14 +8,14 @@ resource "aws_security_group" "app-sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["10.11.0.0/24"]
+    cidr_blocks = [var.cidr_block]
   }
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.11.0.0/16"]
+    cidr_blocks = [var.cidr_block]
   }
 
   ingress {
@@ -33,7 +33,7 @@ resource "aws_security_group" "app-sg" {
   }
 
   tags = {
-    "Name" = "dev-abotyan-sg-app"
+    "Name"        = "dev-abotyan-sg-app"
     "description" = "better-tera-abotyan-sg-app"
   }
 }

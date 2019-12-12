@@ -6,8 +6,7 @@ resource "aws_vpc" "vpc" {
   instance_tenancy     = "default"
 
   tags = {
-    Name = "dev-abotyan-vpc"
+    Name        = "dev-abotyan-vpc"
     description = "better-tera-abotyan-vpc"
   }
 }
-

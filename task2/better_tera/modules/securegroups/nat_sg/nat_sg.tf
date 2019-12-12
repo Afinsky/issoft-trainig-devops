@@ -22,7 +22,7 @@ resource "aws_security_group" "nat-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.11.0.0/16"]
+    cidr_blocks = [var.cidr_block]
   }
 
   ingress {
@@ -40,7 +40,7 @@ resource "aws_security_group" "nat-sg" {
   }
 
   tags = {
-    Name = "dev-abotyan-sg-nat"
+    Name        = "dev-abotyan-sg-nat"
     description = "better-tera-abotyan-sg-nat"
   }
 }

@@ -7,9 +7,9 @@ variable "availability_zones" {}
 variable "sn_id" {}
 
 variable "key_id" {
-    type = "string"
+  type = "string"
 }
 
 variable "sg_id" {
-    type = "string"
+  type = "string"
 }
