@@ -47,3 +47,13 @@ variable "pub_key_path" {
 variable "aws_ami" {
   type = "string"
 }
+
+variable "rds_instance_type" {
+  type = "string"
+}
+
+variable "db_name" {}
+
+variable "db_user" {}
+
+variable "db_password" {}

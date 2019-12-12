@@ -1,0 +1,1 @@
+variable "sn_id" {}

@@ -12,6 +12,8 @@ app_instance_type = "t2.micro"
 
 db_instance_type = "t2.micro"
 
+rds_instance_type = "db.t2.micro"
+
 cidr_block = "10.20.0.0/16"
 
 key_name = "abotyan-tera-key"
@@ -19,3 +21,9 @@ key_name = "abotyan-tera-key"
 pub_key_path = "./abotyan-tera-key.pub"
 
 aws_ami = "ami-01623d7b"
+
+db_name = "applicationdb"
+
+db_user = "abotyan"
+
+db_password = "yourpassword"

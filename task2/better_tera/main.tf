@@ -161,3 +161,20 @@ module "db_association" {
   sn_id              = module.database_subnet.sn_id
   rt_id              = module.private_rt.rt_id
 }
+
+
+
+
+module "rds_sn_group" {
+  source = "./modules/rds/rds_sn_group"
+  sn_id  = module.database_subnet.sn_id
+}
+
+module "rds_instance" {
+  source            = "./modules/rds/rds_db"
+  rds_instance_type = var.rds_instance_type
+  db_name           = var.db_name
+  db_user           = var.db_user
+  db_password       = var.db_password
+  db_group_name     = module.rds_sn_group.db_sn_group_id
+}
