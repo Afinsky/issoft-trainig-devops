@@ -1,0 +1,6 @@
+---
+    - hosts: back2
+      become: yes
+      roles: 
+        - jenkins
+        - nginx_for_jenkins

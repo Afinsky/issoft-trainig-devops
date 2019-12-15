@@ -1,0 +1,4 @@
+apt_jenkins_packages: 
+  - openjdk-8-jdk
+  - git 
+  - wget

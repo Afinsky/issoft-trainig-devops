@@ -1,0 +1,17 @@
+Host *
+  ForwardAgent yes
+
+
+Host *
+   StrictHostKeyChecking no
+   UserKnownHostsFile=/dev/null
+
+
+Host Bastion
+        User ubuntu
+        HostName 3.81.172.163 
+
+Host 10.20.*.*
+        ProxyJump Bastion
+
+

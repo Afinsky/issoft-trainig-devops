@@ -1,0 +1,9 @@
+To foraward key:
+
+generate key in terraform:
+
+$: cd terraform
+$: ssh-keygen -f abotyan-tera-key
+$: cd ..
+$: chmod +x forward_key.sh
+$:. ./forward_key.sh

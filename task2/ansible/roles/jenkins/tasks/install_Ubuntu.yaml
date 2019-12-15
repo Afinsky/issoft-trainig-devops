@@ -1,0 +1,9 @@
+---
+- name: Jenkins. Install need packages
+  apt:
+    update_cache: yes
+    name: "{{ apt_jenkins_packages }}"
+    state: latest
+
+- name: Jenkins. Install jenkins
+  include: install_jenkins_Ubuntu.yaml

@@ -1,0 +1,10 @@
+Enable locale ssh config into 'config':
+
+$: cat config > ~/.ssh/aws_config
+
+
+vim ~/.ssh/config
+
+...
+Include ~/.ssh/aws_config
+

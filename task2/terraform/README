@@ -1,0 +1,13 @@
+Need generate key:
+
+ssh-keygen -f abotyan-tera-key
+
+For ansible/ssh. i.g:
+
+Host Bastion
+        User ec2-user
+        HostName 100.24.15.38
+
+Host 10.20.*.*
+        ProxyJump Bastion
+

@@ -1,0 +1,37 @@
+---
+- name: Nginx. Install nginx
+  apt:
+    update_cache: yes
+    name: nginx
+    state: latest
+
+- name: Nginx. Add virtual host
+  copy:
+    src: "jenkins-proxy.conf"
+    dest: "/etc/nginx/sites-available/jenkins-proxy.conf"
+
+- name: Nginx. Create symlink
+  file:
+    src: "/etc/nginx/sites-available/jenkins-proxy.conf"
+    dest: "/etc/nginx/sites-enabled/default"
+    state: link
+
+- name: Jenkins. Edit config
+  lineinfile:
+    dest: "/etc/init.d/jenkins"
+    backup: yes
+    regexp: "^JENKINS_ARGS"
+    line: JENKINS_ARGS="--httpListenAddress=127.0.0.1"
+
+- name: Jenkins. Enable and restart
+  service:
+    name: jenkins
+    state: restarted
+    enabled: yes
+
+- name: Nginx. Enable and restart
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
+ 
