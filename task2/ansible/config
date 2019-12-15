@@ -9,7 +9,7 @@ Host *
 
 Host Bastion
         User ubuntu
-        HostName 3.81.172.163 
+        HostName 54.80.167.197 
 
 Host 10.20.*.*
         ProxyJump Bastion

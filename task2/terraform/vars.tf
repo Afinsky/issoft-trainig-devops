@@ -31,6 +31,10 @@ variable "db_instance_type" {
   type = "string"
 }
 
+variable "jenkins_instance_type" {
+  type = "string"
+}
+
 variable "cidr_block" {
   type        = "string"
   description = "VPC cidr block. Exaple: 10.10.0.0/16"

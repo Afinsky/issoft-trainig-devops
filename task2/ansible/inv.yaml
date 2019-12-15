@@ -4,10 +4,6 @@ jenkins_group:
         ansible_ssh_user: "ubuntu" 
     hosts:
         jenkins:
-            ansible_host: 3.81.172.163
-        back:
-            ansible_host: 10.20.12.16
-        back2:
-            ansible_host: 54.152.238.43
+            ansible_host: 10.20.0.139
 
 

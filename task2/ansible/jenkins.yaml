@@ -1,5 +1,5 @@
 ---
-    - hosts: back2
+    - hosts: jenkins
       become: yes
       roles: 
         - jenkins

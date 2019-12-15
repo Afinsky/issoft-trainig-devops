@@ -75,6 +75,14 @@ module "balancer_sg" {
 }
 
 
+module "jenkins_sg" {
+  source     = "./modules/securegroups/jenkins_sg"
+  cidr_block = var.cidr_block
+  vpc_id     = module.vpc.vpc_id
+}
+
+
+
 module "nat" {
   source             = "./modules/instances/nat"
   aws_ami            = var.aws_ami
@@ -115,6 +123,18 @@ module "be" {
   sg_id              = module.app_sg.sg_id
   sn_id              = module.application_subnet.sn_id
 }
+
+
+module "jenkins" {
+  source                = "./modules/instances/jenkins"
+  aws_ami               = var.aws_ami
+  jenkins_instance_type = var.jenkins_instance_type
+  availability_zones    = var.availability_zones
+  key_id                = module.key.key_id
+  sg_id                 = module.jenkins_sg.sg_id
+  sn_id                 = module.public_subnet.sn_id
+}
+
 
 #module "db" {
 #  source             = "./modules/instances/db"
