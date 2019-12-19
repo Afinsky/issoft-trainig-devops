@@ -6,7 +6,9 @@ resource "aws_subnet" "database" {
   map_public_ip_on_launch = false
 
   tags = {
-    "Name"        = "dev-abotyan-sn-private-db-${element(var.availability_zones, count.index)}"
-    "description" = "better-tera-abotyan. Database subnet - ${element(var.availability_zones, count.index)}"
+    "Name"        = "abotyan-db-sn"
+    "owner"       = "abotyan"
+    "region"      = "${element(var.availability_zones, count.index)}"
+    "description" = "better-terra-abotyan. Database subnet - ${element(var.availability_zones, count.index)}"
   }
 }

@@ -1,5 +1,5 @@
 resource "aws_security_group" "ssh-sg" {
-  name        = "better-tera-abotyan-sg-bastion"
+  name        = "bastion"
   description = "SG for SSH"
   vpc_id      = var.vpc_id
 
@@ -68,7 +68,8 @@ resource "aws_security_group" "ssh-sg" {
   }
 
   tags = {
-    Name        = "dev-abotyan-sg-bastion"
-    description = "better-tera-abotyan-sg-ssh"
+    Name        = "abotyan-bastion-sg"
+    owner       = "abotyan"
+    description = "better-terra-abotyan-sg-ssh"
   }
 }

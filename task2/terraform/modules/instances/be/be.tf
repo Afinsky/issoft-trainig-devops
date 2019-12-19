@@ -11,7 +11,9 @@ resource "aws_instance" "be" {
   associate_public_ip_address = false
 
   tags = {
-    Name        = "dev-abotyan-app-${element(var.availability_zones, count.index)}"
-    description = "better-tera-abotyan-be. Application subnet - ${element(var.availability_zones, count.index)}"
+    Name        = "abotyan-app"
+    owner       = "abotyan"
+    region      = "${element(var.availability_zones, count.index)}"
+    description = "better-terra-abotyan-be. Application subnet - ${element(var.availability_zones, count.index)}"
   }
 }

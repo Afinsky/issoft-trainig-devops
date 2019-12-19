@@ -1,4 +1,12 @@
-Enable locale ssh config into 'config':
+Change bastion IP into local ssh config (aws_config)
+Enable locale ssh config into 'config'
+Enable ssh agent and add ssh key in ssh agent:
+
+
+
+$: eval `ssh-agent -s`
+$: ssh-add ../terraform/abotyan-tera-key
+
 
 $: cat config > ~/.ssh/aws_config
 

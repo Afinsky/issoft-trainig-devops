@@ -6,11 +6,23 @@ bastion_instance_type = "t2.micro"
 
 nat_instance_type = "t2.micro"
 
-proxy_instance_type = "t2.micro"
+#proxy_instance_type = "t2.micro"
 
 app_instance_type = "t2.micro"
 
+front_instance_type = "t2.micro"
+
 jenkins_instance_type = "t2.micro"
+
+jenkins_slave_instance_type = "t2.medium"
+
+nexus_instance_type = "t2.medium"
+
+sonar_instance_type = "t2.medium"
+
+
+
+
 
 db_instance_type = "t2.micro"
 

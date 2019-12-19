@@ -8,7 +8,8 @@ resource "aws_route_table" "private-rt" {
   }
 
   tags = {
-    "Name"        = "dev-abotyan-rt-nat-${element(var.availability_zones, count.index)}"
-    "description" = "better-tera-abotyan-rt-nat. Route table to NAT in ${element(var.availability_zones, count.index)}"
+    "Name"        = "abotyan-rt-private${count.index}"
+    "owner"       = "abotyan"
+    "description" = "better-terra-abotyan-rt-nat. For private subnets in ${element(var.availability_zones, count.index)} to outside route to NAT${count.index}"
   }
 }

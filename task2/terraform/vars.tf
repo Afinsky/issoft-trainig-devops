@@ -19,7 +19,7 @@ variable "nat_instance_type" {
   type = "string"
 }
 
-variable "proxy_instance_type" {
+variable "front_instance_type" {
   type = "string"
 }
 
@@ -34,6 +34,20 @@ variable "db_instance_type" {
 variable "jenkins_instance_type" {
   type = "string"
 }
+
+variable "jenkins_slave_instance_type" {
+  type = "string"
+}
+
+variable "nexus_instance_type" {
+  type = "string"
+}
+
+variable "sonar_instance_type" {
+  type = "string"
+}
+
+
 
 variable "cidr_block" {
   type        = "string"

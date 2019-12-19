@@ -7,7 +7,8 @@ resource "aws_route_table" "public-rt" {
   }
 
   tags = {
-    "Name"        = "dev-abotyan-rt"
-    "description" = "better-tera-abotyan-rt-igw"
+    "Name"        = "abotyan-rt-public"
+    "owner"       = "abotyan"
+    "description" = "better-terra-abotyan-rt. For public subnets to outside route to IGW"
   }
 }

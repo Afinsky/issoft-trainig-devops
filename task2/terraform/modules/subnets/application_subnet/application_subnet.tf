@@ -6,7 +6,9 @@ resource "aws_subnet" "application" {
   map_public_ip_on_launch = false
 
   tags = {
-    "Name"        = "dev-abotyan-sn-private-app-${element(var.availability_zones, count.index)}"
-    "description" = "better-tera-abotyan. Application subnet - ${element(var.availability_zones, count.index)}"
+    "Name"        = "abotyan-app-sn"
+    "owner"       = "abotyan"
+    "region"      = "${element(var.availability_zones, count.index)}"
+    "description" = "better-terra-abotyan. Application subnet - ${element(var.availability_zones, count.index)}"
   }
 }

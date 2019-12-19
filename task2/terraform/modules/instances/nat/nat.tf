@@ -21,7 +21,9 @@ EOF
 
 
   tags = {
-    Name        = "dev-abotyan-nat-${element(var.availability_zones, count.index)}"
-    description = "better-tera-abotyan-nat. Public subnet - ${element(var.availability_zones, count.index)}"
+    Name        = "abotyan-nat"
+    owner       = "abotyan"
+    region      = "${element(var.availability_zones, count.index)}"
+    description = "better-terra-abotyan-nat. Public subnet - ${element(var.availability_zones, count.index)}"
   }
 }

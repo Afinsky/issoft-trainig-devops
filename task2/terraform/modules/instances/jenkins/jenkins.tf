@@ -1,4 +1,4 @@
-resource "aws_instance" "bastion" {
+resource "aws_instance" "jenkins" {
   ami           = var.aws_ami
   instance_type = var.jenkins_instance_type
 
@@ -12,10 +12,24 @@ resource "aws_instance" "bastion" {
   key_name        = var.key_id
   security_groups = [var.sg_id]
 
-  associate_public_ip_address = true
+  #associate_public_ip_address = true
   #count.index ->0
+  
+
   tags = {
-    Name        = "dev-abotyan-jenkins-${element(var.availability_zones, 0)}"
-    description = "better-tera-abotyan-jenkins. Public subnet - ${element(var.availability_zones, 0)}"
+    Name        = "abotyan-jenkins"
+    owner       = "abotyan"
+    region      = "${element(var.availability_zones, 0)}"
+    description = "better-terra-abotyan-jenkins. Infrastructure subnet - ${element(var.availability_zones, 0)}"
   }
+
+
+#provisioner "local-exec" {
+#    command = <<EOT
+#>../ansible/jenkins.ini;
+#echo "[jenkins]" | tee -a ../ansible/jenkins.ini;
+#echo "${aws_instance.jenkins.private_ip} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=../terraform/abotyan-tera-key" | tee -a ../ansible/jenkins.ini;
+#ansible-playbook -i ../ansible/jenkins.ini ../ansible/jenkins.yaml
+#EOT
+#}
 }
